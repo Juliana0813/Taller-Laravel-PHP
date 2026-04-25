@@ -19,7 +19,7 @@ class VenueFactory extends Factory
         return [
             'venue_name' => fake()->company(),
             'venue_address' => fake()->address(),
-            'venue_max_capacity' => fake()->numberBetween(2, 100000),
+            'venue_max_capacity' => fake()->numberBetween(1, 40000),
         ];
     }
 }

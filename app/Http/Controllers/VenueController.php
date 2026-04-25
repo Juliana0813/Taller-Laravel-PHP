@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVenueRequest;
 use App\Http\Requests\UpdateVenueRequest;
 use App\Models\Venue;
+use Inertia\Inertia;
 
 class VenueController extends Controller
 {
@@ -14,7 +15,9 @@ class VenueController extends Controller
     public function index()
     {
         $venues = Venue::all();
-        return response()->json($venues);
+          return Inertia::render('Venues/Index', [
+        'venues' => Venue::all()
+    ]);
     }
 
     /**
@@ -22,8 +25,17 @@ class VenueController extends Controller
      */
     public function store(StoreVenueRequest $request)
     {
-        $venue = Venue::create($request->validated());
-        return response()->json($venue, 201);
+        $validated = $request->validate([
+        'venue_name' => 'required|string|max:255',
+        'venue_address' => 'required|string|max:255',
+        'venue_max_capacity' => 'required|integer|min:1',
+    ]);
+
+    Venue::create($validated);
+
+    return redirect()->route('venues.index')
+        ->with('message', 'Venue created successfully.');
+        
     }
 
     /**
@@ -31,7 +43,9 @@ class VenueController extends Controller
      */
     public function show(Venue $venue)
     {
-        return response()->json($venue);
+         return Inertia::render('Venues/Show', [
+        'venue' => $venue
+        ]);
     }
 
     /**
@@ -51,4 +65,10 @@ class VenueController extends Controller
         $venue->delete();
         return response()->json(['message' => 'Venue deleted successfully'], 200);
     }
+
+    public function create()
+    {
+        return Inertia::render('Venues/Create');
+    }
+
 }

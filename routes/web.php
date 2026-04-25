@@ -24,4 +24,5 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('venues', VenueController::class);
+    
 });
