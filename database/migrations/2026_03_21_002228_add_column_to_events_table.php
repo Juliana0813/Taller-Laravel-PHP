@@ -8,13 +8,12 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
+   public function up(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->foreignId('fk_venue_event')
-                ->nullable()
-                ->references('id_venue')
-                ->on('venues');
+            $table->foreignId('venue_id')
+                  ->nullable()
+                  ->constrained('venues'); 
         });
     }
 
